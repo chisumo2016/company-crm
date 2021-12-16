@@ -11,3 +11,6 @@
 -Create A MakeFile on the root of project
     -Run
 https://api.company-crm.localhost
+
+##SETTING GENERATORS 
+ - Install barryvdh/laravel-ide-helper
