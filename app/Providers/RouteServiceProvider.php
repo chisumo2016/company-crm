@@ -8,6 +8,7 @@ use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvi
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
+use RuntimeException;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -24,14 +25,18 @@ class RouteServiceProvider extends ServiceProvider
         $this->configureRateLimiting();
 
         $this->routes(function () {
-            Route::prefix('api')
-                ->middleware('api')
-                //->namespace($this->namespace)
-                ->group(base_path('routes/api.php'));
+            foreach ($this->centralDomains() as $domain){
+                Route::prefix('api')
+                    ->domain($domain) //add domain
+                    ->middleware('api')
+                    //->namespace($this->namespace)
+                    ->group(base_path('routes/api.php'));
 
-            Route::middleware('web')
-                //->namespace($this->namespace)
-                ->group(base_path('routes/web.php'));
+                Route::middleware('web')
+                    ->domain($domain) //add domain
+                    ->group(base_path('routes/web.php'));
+            }
+
         });
     }
 
@@ -45,6 +50,22 @@ class RouteServiceProvider extends ServiceProvider
         Limit::perMinute(60)->by(optional($request->user())->id ?: $request->ip())
 
         );
+
+    }
+
+    /**
+     * @return array
+     */
+    protected  function  centralDomains(): array
+    {
+        $domains = config('tenancy.central_domains');
+
+        if (! is_array($domains)) {
+                throw  new RunTimeException(
+                    "Tenancy Central Domains should be an array",
+           );
+        }
+        return  (array) $domains;
 
     }
 }

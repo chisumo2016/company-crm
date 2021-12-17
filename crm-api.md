@@ -50,3 +50,7 @@ https://api.company-crm.localhost
     - Create a Tenant Model
         - https://tenancyforlaravel.com/docs/v3/tenant-model
         - php artisan make:model Tenant
+
+## MAKE CHANGES ON OUR ROUTES 
+    - change the routes in RouteServiceProvider
+    - run make analyse
