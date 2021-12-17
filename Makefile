@@ -11,7 +11,7 @@ test:
 	docker exec company-crm_php php artisan test
 
 migrate:
-	declare exec  company-crm_php php artisan migrate
+	docker exec  company-crm_php php artisan migrate
 
 analyse:
 	./vendor/bin/phpstan analyse
