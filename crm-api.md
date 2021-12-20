@@ -54,3 +54,15 @@ https://api.company-crm.localhost
 ## MAKE CHANGES ON OUR ROUTES 
     - change the routes in RouteServiceProvider
     - run make analyse
+
+## CREATE ALL DATA MODELS 
+    - php artisan make:model User  -mfs 
+    - php artisan make:model Tenant  -mfs 
+    - php artisan make:model Company  -mfs 
+    - php artisan make:model Department  -mfs 
+    - php artisan make:model Team   -mfs 
+    - php artisan make:model Contact  -mfs 
+    - php artisan make:model JobTitle  -mfs 
+    - php artisan make:model Project  -mfs 
+    - php artisan make:model Interaction  -mfs 
+    - # NB : Move all three  migrations belongs to a  Tenant folder Company Department
