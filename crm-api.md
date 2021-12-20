@@ -66,3 +66,15 @@ https://api.company-crm.localhost
     - php artisan make:model Project  -mfs 
     - php artisan make:model Interaction  -mfs 
     - # NB : Move all three  migrations belongs to a  Tenant folder Company Department
+
+## API DESIGN 
+    - Paths :
+        /api/contacts
+        /api/contacts/{contact-uuid}
+
+        /api/projects 
+        /api/projects/{projects-uuid}  
+
+        /api/interactions 
+        /api/interactions/{interactions-uuid}  
+   

@@ -15,6 +15,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder|JobTitle newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|JobTitle query()
  * @mixin \Eloquent
+ * @method static \Illuminate\Database\Query\Builder|JobTitle onlyTrashed()
+ * @method static \Illuminate\Database\Query\Builder|JobTitle withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|JobTitle withoutTrashed()
  */
 class JobTitle extends Model
 {
