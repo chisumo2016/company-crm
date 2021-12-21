@@ -22,6 +22,8 @@ Route::get('ping', function (){
     );
 });
 
+//Route::post()->name('store');
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
