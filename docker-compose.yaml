@@ -20,7 +20,7 @@ services:
     networks:
       - company-crm
     labels:
-      - 'traefik.http.routers.${PROJECT_NAME}_nginx.rule=HostRegexp(`${APP_DOMAIN}`,`{subdomain:[a-z]+.${APP_DOMAIN}}`)'
+      - 'traefik.http.routers.${PROJECT_NAME}_nginx.rule=HostRegexp(`${APP_DOMAIN}`, `{subdomain:[a-z]+.${APP_DOMAIN}}`)'
       - 'traefik.http.routers.${PROJECT_NAME}_nginx.priority=1'
       - 'traefik.docker.network=proxy'
     healthcheck:
@@ -97,7 +97,6 @@ services:
       - '8080:8080' #Docker sends requests on port 8080 to Traefik on port 8080
     networks:
       - company-crm
-
 
 # NETWORKS
 networks:
