@@ -13,7 +13,10 @@
         "laravel/framework": "^8.65",
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
-        "stancl/tenancy": "^3.4"
+        "spatie/laravel-enum": "^2.5",
+        "spatie/laravel-query-builder": "^4.0",
+        "stancl/tenancy": "^3.4",
+        "timacdonald/json-api": "^0.1.5"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
@@ -63,7 +66,11 @@
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "composer/package-versions-deprecated": false,
+            "pestphp/pest-plugin": true
+        }
     },
     "minimum-stability": "dev",
     "prefer-stable": true

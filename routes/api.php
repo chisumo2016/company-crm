@@ -22,7 +22,17 @@ Route::get('ping', function (){
     );
 });
 
-//Route::post()->name('store');
+Route::middleware(['auth:sanctum'])->group(function (){
+    Route::prefix('contacts')->as('contacts:')->group(function (){
+        Route::get('/', App\Http\Controllers\Api\Contacts\IndexController::class)->name('index');
+        //Route::get('/{id}', 'ContactController@show')->name('show');
+        //Route::post('/', 'ContactController@store')->name('store');
+        //Route::put('/{id}', 'ContactController@update')->name('update');
+        //Route::delete('/{id}', 'ContactController@destroy')->name('destroy');
+    });
+});
+
+
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();

@@ -8,28 +8,31 @@ install:
 		@composer install
 
 test:
-	docker exec company-crm_php php artisan test
+	@docker exec company-crm_php php artisan test
 
 migrate:
-	docker exec  company-crm_php php artisan migrate
+	@docker exec  company-crm_php php artisan migrate
+
+seed:
+	@docker exec  company-crm_php php artisan db:seed
 
 analyse:
 	./vendor/bin/phpstan analyse
 
 generate:
-	docker exec company-crm_php php artisan ide-helper:models --write
+	@docker exec company-crm_php php artisan ide-helper:models --write
 
 nginx:
-	docker exec -it company-crm_nginx /bin/sh
+	@docker exec -it company-crm_nginx /bin/sh
 
 php:
-	docker exec -it company-crm_php /bin/sh
+	@docker exec -it company-crm_php /bin/sh
 
 mysql:
-	docker exec -it company-crm_mysql /bin/sh
+	@docker exec -it company-crm_mysql /bin/sh
 
 redis:
-	docker exec -it company-crm_redis /bin/sh
+	@docker exec -it company-crm_redis /bin/sh
 
 
 
