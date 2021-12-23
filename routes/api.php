@@ -25,8 +25,8 @@ Route::get('ping', function (){
 Route::middleware(['auth:sanctum'])->group(function (){
     Route::prefix('contacts')->as('contacts:')->group(function (){
         Route::get('/', App\Http\Controllers\Api\Contacts\IndexController::class)->name('index');
+        Route::post('/', App\Http\Controllers\Api\Contacts\StoreController::class)->name('store');
         //Route::get('/{id}', 'ContactController@show')->name('show');
-        //Route::post('/', 'ContactController@store')->name('store');
         //Route::put('/{id}', 'ContactController@update')->name('update');
         //Route::delete('/{id}', 'ContactController@destroy')->name('destroy');
     });

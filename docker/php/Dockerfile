@@ -19,6 +19,7 @@ RUN apt-get clean && apt-get update && apt-get upgrade -y &&  apt-get install -y
     unzip \
     wget\
     zip \
+    curl \
     tzdata
 
 ARG INSTALL_PHPREDIS=false
@@ -27,6 +28,11 @@ RUN pecl install -o -f redis  \
     && docker-php-ext-enable redis
 
 RUN docker-php-ext-configure intl
+
+
+# Clear Cache
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+
 #PHP EXTENSIONS
 RUN docker-php-ext-install \
     bcmath \
@@ -51,5 +57,3 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 #RUN chmod 755 /var/www/vhosts/survery-app
 
 
-
- #&& rm -rf /var/lib/apt/lists/*

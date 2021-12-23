@@ -113,3 +113,123 @@
     - Add seed in MakeFile   
     - Run make migrate:fresh  
     - Run make seed  
+
+## CREATE A CONTACT 
+    - Write a test to create a contact contactTest file
+    - Create some data via contact
+    - Create dataprovider for the test(Datasets)  -create a Strings.php file    
+    - Will return strings
+    - expect()  as count set toEqual(0)
+    - Run test again - Passed
+    - Send a request to create a new contact via postJson()
+    - Check that the contact was created in database
+    - Run test again -Fail
+        Route [api:contacts:store] not defined.
+    -Soln is to create a storeController , StoreRequest UpdateRequest  and atttach the api route of store
+        php  artisan make:controller Api\\Contacts\\StoreController --invokable
+        php  artisan make:request Api\\Contacts\\StoreRequest
+        php  artisan make:request Api\\Contacts\\UpdateRequest
+    - Add a new route called store in api route
+        Route::post('/', App\Http\Controllers\Api\Contacts\StoreController::class)->name('store');
+    - Run test again - Failed
+         Expected response status code [201] but received 401.
+        Failed asserting that 201 is identical to 401.
+    -Soln is to login 
+    -Run the test again - Failed
+        Expected response status code [201] but received 200.
+            Failed asserting that 201 is identical to 200.
+    -Soln it is failing becausse the status is incorrect, not creating anything,So wee need to 
+       implement the logic into StoreController TO return new JsonResponse
+    -Run make analyse - OK
+    -add some login into the StoreController response passing empty array
+    -Run make test - Failed
+          Failed asserting that 0 matches expected 1.
+    -Soln we're not adding anything to the response, so we need to add the logic to return into storeController
+        -write the validation error in the storeRequest
+        -Run make test - failed
+            Expected response status code [201] but received 422.
+
+        The following errors occurred during the request:
+        
+        {
+            "message": "The given data was invalid.",
+            "errors": {
+            "email": [
+                "The email must be a valid email address."
+                ]
+                }
+        }
+
+        Failed asserting that 201 is identical to 422.
+    -Soln ,email validation issue in ContactTest , to change $string to 'email' =>"{$string}@gmail.com",
+        -Run make test - failed althought we passed our validation rule 
+            Failed asserting that 0 matches expected 1.
+        -Solution  , we need to create Factories ,ValueObjects  as we passed the validation rule
+            -Create Factories, ValueObjects  Folder in app
+            -Create a class called ContactValueObject in ValueObjects Folder and make it final class and
+              write a public function to toArray() WHICH corresponds to the Columns in the database 
+            -Add the Pronouns to the ContactValueObject 
+            -create a Rule Pronoun php artisan make:rule PronounRule
+            -add the rule to the StoreRequest
+            -Run make test - fail
+                Expected response status code [201] but received 422.
+
+                The following errors occurred during the request:
+                
+                {
+                "message": "The given data was invalid.",
+                "errors": {
+                        "pronouns": [
+                        "The pronouns field is required."
+                        ]
+                      }
+                }
+                
+                Failed asserting that 201 is identical to 422.
+            -Solution is to make sure we pass the prounouns in ContactTest   'pronouns' => $string,
+                -Run make test - failed
+                Expected response status code [201] but received 422.
+
+                    The following errors occurred during the request:
+                    
+                    {
+                    "message": "The given data was invalid.",
+                    "errors": {
+                    "pronouns": [
+                    "The selected pronouns is invalid."
+                    ]
+                    }
+                    }
+                    
+                    Failed asserting that 201 is identical to 422.
+                -Soloution is to create a random() helper and call it in ContactTest  'pronouns' => \App\Enums\Pronouns::random(),
+                -Run make test - failed
+                    Failed asserting that 0 matches expected 1.
+                -Solution ,we havent added yet, create a ContactFactory class in Factories Folder and make
+                        public static  function  make()
+                - Run make analyse -  failed
+                    Method App\Enums\Pronouns::random() should return string but returns mixed.
+                -Solution ,forgot to put a return type as string $pronouns in ContacValueObject
+                -Run make analyse - OK
+                -Run Test - Failed
+                    Failed asserting that 0 matches expected 1.
+                    -Soloution , wee need to cteate an Actions folder in app,app/Actions/Contacts/CreateNewContact.php
+                       This class never being extended.Create Contracts folder in app ,with ValueObjectContracts.php
+                       which extends ValueObjectContracts.php
+                      - to implements a app/ValueObjects/ContactValueObjects.php
+                      -create  a ststic method  in CreateNewContact.php which has handle() method
+                        app/Actions/Contacts/CreateNewContact.php
+                      -In StoreController  we need to pass the CreateNewContact handler to the ContactRepository and ContactFactory
+                      we need to pass the data new ContactResource()
+                      -Run make test - OK
+                      -Add the AssertJson
+                        >assertJson(fn(AssertableJson $json) =>
+                            $json
+                                ->where(key: 'type', expected: 'contact')
+                                ->where(key: 'attributes.name.first', expected: $string)
+                                ->where(key: 'attributes.name.last', expected: $string)
+                                ->where(key: 'attributes.phone', expected: $string)
+                                ->etc(),
+                            );
+                            -Run make test - OK
+                            -Run make analyse - OK

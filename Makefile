@@ -16,6 +16,15 @@ migrate:
 seed:
 	@docker exec  company-crm_php php artisan db:seed
 
+key:
+	@docker exec  company-crm_php php artisan key:generate
+
+cache:
+	@docker exec  company-crm_php php artisan cache:clear
+
+config:
+	@docker exec  company-crm_php php artisan config:cache
+
 analyse:
 	./vendor/bin/phpstan analyse
 
