@@ -240,3 +240,50 @@
         Expected response status code [201] but received 401.
         Failed asserting that 201 is identical to 401.
     -Problem is the Status code  .It should be Unauthorized  401 in OUR ContactTest Because we are not logged in
+    -Solution is  add unauthorized in test
+        -Run make test - OK
+        -Run make analyse - OK
+
+## Create another Test for  UUID
+    -can retrieve a contact by UUID
+    -Run make test - failed
+        Route [api:contacts:show] not defined.
+    - The route is not created 
+    -Solution create  two thing at one , create ShowController , add in api file
+        -Run make test -failed
+             Expected response status code [200] but received 401.
+              Failed asserting that 200 is identical to 401.
+        -Problem , we're not authorizes in test add auth()->login(User::factory()->create());
+        -Run make Test - OK
+        -Run make analyse - OK
+    - We need to assertJson(fn(AssertableJson $json) =>
+            $json
+                ->where(key: 'type', expected: 'contact')
+                ->where(key: 'attributes.name.first', expected: $string)
+                ->where(key: 'attributes.name.last', expected: $string)
+                ->where(key: 'attributes.phone', expected: $string)
+                ->etc(),
+            );
+        - Run make test - failed
+             Invalid JSON was returned from the route.
+        - Problem is not return anything in the ShowController, we need to return the JsonResponse
+                return  new JsonResponse(
+                data: [],
+                status: Http::OK
+                 );
+        -Run test - failed
+             Property [type] does not exist.
+            Failed asserting that false is true.
+        -Problem/solution we dont have the UUID in the ShowController, we need to find the uuid and return the 
+        ContactResource instead of empty array
+        -Run make test - OK
+
+## Create another Test for  401 
+    - receives a 404 on show with incorrect UUID
+    - write a test for this
+    -Run make test - failed
+         Expected response status code [404] but received 401.
+        Failed asserting that 404 is identical to 401.
+    -Problem /Solution : Not login in to our test 
+        -Run make test - OK
+        -Run make analyse - OK

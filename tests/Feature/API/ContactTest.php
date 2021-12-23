@@ -93,3 +93,42 @@ it('can create a new contact',  function(string $string){
     //Check that the contact was created in database
     expect(Contact::query()->count())->toEqual(1);
 })->with('strings');//3
+
+it('can retrieve a contact by UUID', function () {
+    auth()->login(User::factory()->create());
+
+   $contact = Contact::factory()->create();
+
+   getJson(
+       uri: route('api:contacts:show', $contact->uuid),
+   )->assertStatus(
+       status: Http::OK
+   )->assertJson(fn(AssertableJson $json) =>
+    $json
+        ->where(key: 'type', expected: 'contact')
+        ->where(key: 'attributes.name.first', expected: $contact->first_name)
+        ->where(key: 'attributes.name.last', expected: $contact->last_name)
+        ->where(key: 'attributes.phone', expected: $contact->phone)
+        ->etc(),
+    );
+});//5
+
+it('receives a 401 on show when not logged in', function () {
+
+    $contact = Contact::factory()->create();
+
+    getJson(
+        uri: route('api:contacts:show', $contact->uuid),
+    )->assertStatus(
+        status: Http::UNAUTHORIZED
+    );
+});//6
+
+it('receives a 404 on show with incorrect UUID', function (string $string) {
+    auth()->login(User::factory()->create());
+    getJson(
+        uri: route('api:contacts:show', $string),
+    )->assertStatus(
+        status: Http::NOT_FOUND
+    );
+})->with('strings');//7
