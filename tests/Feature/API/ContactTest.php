@@ -8,15 +8,15 @@ use Illuminate\Testing\Fluent\AssertableJson;
 use \JustSteveKing\StatusCode\Http;
 
 use function Pest\Laravel\getJson;
-
-it('gets an Unauthorized response when not logged in on the index', function () {
+use function Pest\Laravel\postJson;
+//
+it('receives a 401 on index when not logged in', function () {
     getJson(
         uri: route('api:contacts:index'),
     )->assertStatus(
         status:Http::UNAUTHORIZED,
     );
-});
-
+}); //2
 
 it('it can retrieve  a list of contacts of users', function (){
     //auth()->loginUsingId(User::factory()->create()->id);
@@ -33,7 +33,30 @@ it('it can retrieve  a list of contacts of users', function (){
               $json->where(key: 'type', expected: 'contact')->etc(),
           ),
         );
-});
+}); //2
+
+it('receives a 401 on create when not logged in', function (string $string) {
+
+    postJson(
+        uri: route('api:contacts:store'),
+        data: [
+                 'title' => $string,
+                 'name' => [
+                     'first'         => $string,
+                     'middle'        => $string,
+                     'last'          => $string,
+                     'preferred'     => $string,
+                     'full'          => "$string $string $string",
+                 ],
+                 'phone'    =>$string,
+                 'email'    =>"{$string}@gmail.com",
+                 'pronouns' => Pronouns::random(),
+                 //'pronouns' => $string,
+             ]
+    )->assertStatus(
+        status: Http::UNAUTHORIZED
+    );
+})->with('strings');//4
 
 it('can create a new contact',  function(string $string){
     auth()->login(User::factory()->create());
@@ -69,4 +92,4 @@ it('can create a new contact',  function(string $string){
 
     //Check that the contact was created in database
     expect(Contact::query()->count())->toEqual(1);
-})->with('strings');
+})->with('strings');//3
