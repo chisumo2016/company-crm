@@ -1,13 +1,16 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Http\Controllers\Api\Contacts;
 
-use App\Actions\Contacts\CreateNewContact;
-use App\Factories\ContactFactory;
+use Domains\Contacts\Aggregates\ContactAggregateRoot;
+
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Contacts\StoreRequest;
-use App\Http\Resources\Api\ContactResource;
+
+use Domains\Contacts\Factories\ContactFactory;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Str;
 use JustSteveKing\StatusCode\Http;
 
 class StoreController extends Controller
@@ -18,17 +21,31 @@ class StoreController extends Controller
      */
     public function __invoke(StoreRequest $request) : JsonResponse
     {
-       $contact = CreateNewContact::handle(
+       $aggregate = ContactAggregateRoot::retrieve(
+           uuid: Str::uuid()->toString(),
+       )->createContact( //Emit an event
            object: ContactFactory::make(
                attributes: $request->validated(),
            ),
        );
+        $aggregate->persist();
+
        return new JsonResponse(
            //data: [],
-           data: new ContactResource(
-               resource: $contact,
-                 ),
-                status: Http::CREATED
+           data: null,
+           status: Http::ACCEPTED //running background job
        );
     }
 }
+
+/*
+ * DTO
+ $contact = CreateNewContact::handle(
+           object: ContactFactory::make(
+               attributes: $request->validated(),
+           ),
+       );
+ new ContactResource(
+   resource: $contact,
+     ),
+ */

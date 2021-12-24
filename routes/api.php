@@ -27,7 +27,7 @@ Route::middleware(['auth:sanctum'])->group(function (){
         Route::get('/', App\Http\Controllers\Api\Contacts\IndexController::class)->name('index');
         Route::post('/', App\Http\Controllers\Api\Contacts\StoreController::class)->name('store');
         Route::get('{uuid}', App\Http\Controllers\Api\Contacts\ShowController::class)->name('show');
-        //Route::put('/{id}', 'ContactController@update')->name('update');
+        Route::put('{uuid}', App\Http\Controllers\Api\Contacts\UpdateController::class)->name('update');
         //Route::delete('/{id}', 'ContactController@destroy')->name('destroy');
     });
 });

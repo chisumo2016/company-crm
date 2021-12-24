@@ -1,20 +1,21 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Factories;
+namespace Domains\Contacts\Factories;
 
-use App\ValueObjects\ContactValueObjects;
+use Domains\Contacts\ValueObjects\ContactValueObject;
 
 final  class  ContactFactory
 {
     /**
      * @param array<string ,string> $attributes
-     * @return ContactValueObjects
+     *
+     * @return ContactValueObject
      */
-   public static  function  make(array $attributes): ContactValueObjects
+   public static  function  make(array $attributes): ContactValueObject
    {
         //Passing the request coming from the form to the ContactValueObjects
-        return new ContactValueObjects(
+        return new ContactValueObject(
             title:        strval( data_get($attributes, key: 'title')),  //strval()
             firstName:     strval(data_get($attributes, key: 'name.first')),
             middleName:    strval(data_get($attributes, key: 'name.middle')),

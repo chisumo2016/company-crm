@@ -16667,6 +16667,28 @@
      
 }
 
+    namespace Illuminate\Database\Schema { 
+            /**
+     * 
+     *
+     */ 
+        class Blueprint {
+                    /**
+         * 
+         *
+         * @see \Spatie\SchemalessAttributes\SchemalessAttributesServiceProvider::registeringPackage()
+         * @param string $columnName
+         * @static 
+         */ 
+        public static function schemalessAttributes($columnName = 'schemaless_attributes')
+        {
+                        return \Illuminate\Database\Schema\Blueprint::schemalessAttributes($columnName);
+        }
+         
+    }
+     
+}
+
 
 namespace  { 
             class App extends \Illuminate\Support\Facades\App {}

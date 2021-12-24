@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Enums;
+namespace Domains\Contacts\Enums;
 
 use Illuminate\Support\Arr;
 

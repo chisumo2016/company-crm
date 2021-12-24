@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace App\ValueObjects;
+namespace Domains\Contacts\ValueObjects;
 
-use App\Contracts\ValueObjectContract;
+use Infrastructure\Contracts\ValueObjectContract;
 
-final class ContactValueObjects implements ValueObjectContract
+final class ContactValueObject implements ValueObjectContract
 {
     /**
      * @param string|null $title
