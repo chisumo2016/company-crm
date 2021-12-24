@@ -13,6 +13,9 @@ test:
 migrate:
 	@docker exec  company-crm_php php artisan migrate
 
+coverage:
+	@docker exec company-crm_php .vendor/bin/pest --coverage
+
 seed:
 	@docker exec  company-crm_php php artisan db:seed
 
