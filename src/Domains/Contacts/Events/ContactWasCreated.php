@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Domains\Contacts\Events;
@@ -8,7 +9,8 @@ use Spatie\EventSourcing\StoredEvents\ShouldBeStored;
 
 class ContactWasCreated extends ShouldBeStored
 {
-    public  function __construct (
+    public function __construct(
         public ContactValueObject $object
-    ){}
+    ) {
+    }
 }

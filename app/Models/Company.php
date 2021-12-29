@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Models;
@@ -24,7 +25,7 @@ class Company extends Model
     use HasFactory;
     use SoftDeletes;
 
-    protected  $fillable = [
+    protected $fillable = [
                 'uuid',
                 'name',
                 'email',

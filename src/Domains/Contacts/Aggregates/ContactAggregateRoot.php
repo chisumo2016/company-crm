@@ -1,8 +1,8 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Domains\Contacts\Aggregates;
-
 
 use Domains\Contacts\Events\ContactWasCreated;
 use Domains\Contacts\Events\ContactWasUpdated;
@@ -15,12 +15,12 @@ class ContactAggregateRoot extends AggregateRoot
      * @param ContactValueObject $object
      * @return $this
      */
-    public function createContact(ContactValueObject $object) :self
+    public function createContact(ContactValueObject $object): self
     {
         $this->recordThat(
             domainEvent: new ContactWasCreated( //goes to events ContactWasCreated
                 object: $object
-           )
+            )
         );
 
         return $this;
@@ -31,7 +31,7 @@ class ContactAggregateRoot extends AggregateRoot
      * @param string  $uuid
      * @return $this
      */
-    public  function updateContact(ContactValueObject $object, string $uuid):self
+    public function updateContact(ContactValueObject $object, string $uuid): self
     {
         $this->recordThat(
             domainEvent: new ContactWasUpdated( //goes to events ContactWasCreated

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Domains\Contacts\ValueObjects;
@@ -17,7 +18,7 @@ final class ContactValueObject implements ValueObjectContract
      * @param string|null $phone
      * @param string      $pronouns
      */
-    public  function __construct(
+    public function __construct(
         public  null|string $title,
         public  string $firstName,
         public  null|string $middleName,
@@ -26,12 +27,13 @@ final class ContactValueObject implements ValueObjectContract
         public  null|string $email,
         public  null|string $phone,
         public  string $pronouns,
-    ){}
+    ) {
+    }
 
     /**
      * @return array
      */
-    public  function toArray(): array  //stored in the database  col=>property name
+    public function toArray(): array  //stored in the database  col=>property name
     {
         return [
             'title'          => $this->title,

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Http\Resources\Api;
@@ -41,7 +42,7 @@ class ContactResource extends JsonApiResource
     /**
      * @return string
      */
-    protected  function fullName() : string
+    protected function fullName(): string
     {
         return ltrim("{$this->first_name} {$this->middle_name} {$this->last_name}");
     }

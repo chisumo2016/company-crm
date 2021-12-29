@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 use Domains\Contacts\Actions\CreateNewContact;
@@ -8,11 +9,11 @@ use Domains\Contacts\Exceptions\ContactUpdateException;
 use Domains\Contacts\Factories\ContactFactory;
 use Illuminate\Database\Eloquent\Model;
 
-it('it can create a new contact', function (string $string){
+it('it can create a new contact', function (string $string) {
     expect(
         CreateNewContact::handle(
             object: ContactFactory::make(
-            attributes: [
+                attributes: [
                 'title' => $string,
                 'name' => [
                     'first'         => $string,
@@ -26,13 +27,11 @@ it('it can create a new contact', function (string $string){
                 'pronouns' => Pronouns::random(),
 
                 ],
-          ),
+            ),
         )
-
     )->toBeInstanceOf(
         class: Model::class
     )->phone->toEqual($string);
-
 })->with('strings');
 it('can update a contact', function (string $string) {
     $contact = \App\Models\Contact::factory()->create();

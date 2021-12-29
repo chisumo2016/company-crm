@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Providers;
@@ -13,19 +14,18 @@ class EventSourcingServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function register() :void
+    public function register(): void
     {
         Projectionist::addProjector(
             projector: ContactHandler::class,
         );
-
     }
 
     /**
      *
      * @return void
      */
-    public function boot() : void
+    public function boot(): void
     {
         //
     }

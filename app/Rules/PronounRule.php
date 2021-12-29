@@ -15,10 +15,10 @@ class PronounRule implements Rule
      */
     public function passes($attribute, $value)
     {
-       return in_array(
-           needle: $value,
-           haystack: Pronouns::all()
-       );
+        return in_array(
+            needle: $value,
+            haystack: Pronouns::all()
+        );
     }
 
     /**

@@ -19,7 +19,7 @@ class UpdateController extends Controller
      * @param string  $uuid
      * @return JsonResponse
      */
-    public function __invoke(UpdateRequest $request, string $uuid):JsonResponse
+    public function __invoke(UpdateRequest $request, string $uuid): JsonResponse
     {
         $contact = Contact::query()
             ->where('uuid', $uuid)

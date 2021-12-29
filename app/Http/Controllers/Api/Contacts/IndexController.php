@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Http\Controllers\Api\Contacts;
@@ -27,7 +28,7 @@ class IndexController extends Controller
             #data:[],
             data: ContactResource::collection(
                 resource: $contacts,
-                ) ,
+            ),
             status: Http::OK
         );
     }

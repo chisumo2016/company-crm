@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Models\Concerns;
@@ -11,8 +12,8 @@ trait HasUuid
     /**
      * @return void
      */
-   public  static function bootHasUuid(): void
-   {
-       static::creating(fn (Model $model) => $model->uuid = Str::uuid()->toString());
-   }
+    public static function bootHasUuid(): void
+    {
+        static::creating(fn (Model $model) => $model->uuid = Str::uuid()->toString());
+    }
 }

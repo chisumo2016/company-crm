@@ -11,8 +11,9 @@ final class ContactWasUpdated extends ShouldBeStored
      * @param ContactValueObject $object
      * @param string             $uuid
      */
-    public  function __construct (
+    public function __construct(
         public ContactValueObject $object,
         public string $uuid
-    ){}
+    ) {
+    }
 }

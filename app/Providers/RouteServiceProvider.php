@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Providers;
@@ -22,12 +23,12 @@ class RouteServiceProvider extends ServiceProvider
     /**
      * @return void
      */
-    public function boot():void
+    public function boot(): void
     {
         $this->configureRateLimiting();
 
         $this->routes(function () {
-            foreach ($this->centralDomains() as $domain){
+            foreach ($this->centralDomains() as $domain) {
                 Route::prefix('api')
                     ->domain($domain) //add domain
                     ->as('api:')
@@ -45,36 +46,34 @@ class RouteServiceProvider extends ServiceProvider
                     ->domain($domain) //add domai
                     ->group(base_path('routes/web.php'));
             }
-
         });
     }
 
     /**
      * @return void
      */
-    protected function configureRateLimiting():void
+    protected function configureRateLimiting(): void
     {
-        RateLimiter::for('api', fn (Request $request) =>
+        RateLimiter::for(
+            'api',
+            fn (Request $request) =>
         /** @lang @phpstan-ignore-next-line */
         Limit::perMinute(60)->by(optional($request->user())->id ?: $request->ip())
-
         );
-
     }
 
     /**
      * @return array
      */
-    protected  function  centralDomains(): array
+    protected function centralDomains(): array
     {
         $domains = config('tenancy.central_domains');
 
         if (! is_array($domains)) {
-                throw  new RunTimeException(
-                    "Tenancy Central Domains should be an array",
-           );
+            throw  new RunTimeException(
+                "Tenancy Central Domains should be an array",
+            );
         }
         return  (array) $domains;
-
     }
 }

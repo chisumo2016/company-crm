@@ -18,7 +18,7 @@ final class Pronouns
     /**
      * @return array<int,string>
      */
-    public  static function all(): array
+    public static function all(): array
     {
         return [
             static::$ae_aer,
@@ -35,9 +35,8 @@ final class Pronouns
     /**
      * @return string
      */
-    public static  function  random():string
+    public static function random(): string
     {
         return strval(Arr::random(static::all()));
     }
 }
-

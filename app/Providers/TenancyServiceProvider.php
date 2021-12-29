@@ -23,7 +23,7 @@ class TenancyServiceProvider extends ServiceProvider
     /**
      * @return array
      */
-    public function events() :array
+    public function events(): array
     {
         return [
             // Tenant events
@@ -121,7 +121,7 @@ class TenancyServiceProvider extends ServiceProvider
      * @return void
      */
 
-    protected function bootEvents() :void
+    protected function bootEvents(): void
     {
         foreach ($this->events() as $event => $listeners) {
             foreach ($listeners as $listener) {

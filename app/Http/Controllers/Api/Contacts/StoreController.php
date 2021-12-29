@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Http\Controllers\Api\Contacts;
@@ -19,22 +20,22 @@ class StoreController extends Controller
      * @param StoreRequest $request
      * @return JsonResponse
      */
-    public function __invoke(StoreRequest $request) : JsonResponse
+    public function __invoke(StoreRequest $request): JsonResponse
     {
-       $aggregate = ContactAggregateRoot::retrieve(
-           uuid: Str::uuid()->toString(),
-       )->createContact( //Emit an event
+        $aggregate = ContactAggregateRoot::retrieve(
+            uuid: Str::uuid()->toString(),
+        )->createContact( //Emit an event
            object: ContactFactory::make(
                attributes: $request->validated(),
            ),
        );
         $aggregate->persist();
 
-       return new JsonResponse(
+        return new JsonResponse(
            //data: [],
            data: null,
-           status: Http::ACCEPTED //running background job
-       );
+            status: Http::ACCEPTED //running background job
+        );
     }
 }
 

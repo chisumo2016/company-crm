@@ -22,13 +22,13 @@ class ShowController extends Controller
     {
         $contact = QueryBuilder::for(
             subject: Contact::class,
-        )->where( 'uuid', $uuid)->firstOrFail();
+        )->where('uuid', $uuid)->firstOrFail();
 
         return  new JsonResponse(
             //data: [],
             data: new ContactResource(
                 resource: $contact,
-                  ),
+            ),
             status: Http::OK
         );
     }

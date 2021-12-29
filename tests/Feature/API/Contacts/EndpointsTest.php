@@ -1,11 +1,12 @@
 <?php
+
 declare(strict_types=1);
 
 use Domains\Contacts\Enums\Pronouns;
 use App\Models\Contact;
 use App\Models\User;
 use Illuminate\Testing\Fluent\AssertableJson;
-use \JustSteveKing\StatusCode\Http;
+use JustSteveKing\StatusCode\Http;
 
 use Spatie\EventSourcing\StoredEvents\Models\EloquentStoredEvent;
 
@@ -22,25 +23,26 @@ it('receives a 401 on index when not logged in', function () {
     );
 }); //2
 
-it('it can retrieve  a list of contacts of users', function (){
+it('it can retrieve  a list of contacts of users', function () {
     //auth()->loginUsingId(User::factory()->create()->id);
     auth()->login(User::factory()->create());
 
     Contact::factory(10)->create();
 
-   getJson(
-       uri: route('api:contacts:index'),
-   )->assertStatus(
+    getJson(
+        uri: route('api:contacts:index'),
+    )->assertStatus(
        status:Http::OK
-   )->assertJson(fn (AssertableJson $json) =>
-          $json->count(10)->first(fn (AssertableJson $json) =>
+   )->assertJson(
+       fn (AssertableJson $json) =>
+          $json->count(10)->first(
+              fn (AssertableJson $json) =>
               $json->where(key: 'type', expected: 'contact')->etc(),
           ),
-        );
+   );
 }); //2
 
 it('receives a 401 on create when not logged in', function (string $string) {
-
     postJson(
         uri: route('api:contacts:store'),
         data: [
@@ -62,7 +64,7 @@ it('receives a 401 on create when not logged in', function (string $string) {
     );
 })->with('strings');//4
 
-it('can create a new contact',  function(string $string){
+it('can create a new contact', function (string $string) {
     auth()->login(User::factory()->create());
     //expect(Contact::query()->count())->toEqual(0); //when I start the test, there are no contacts   0
     expect(EloquentStoredEvent::query()->count())->toEqual(0);
@@ -96,24 +98,24 @@ it('can create a new contact',  function(string $string){
 it('can retrieve a contact by UUID', function () {
     auth()->login(User::factory()->create());
 
-   $contact = Contact::factory()->create();
+    $contact = Contact::factory()->create();
 
-   getJson(
-       uri: route('api:contacts:show', $contact->uuid),
-   )->assertStatus(
+    getJson(
+        uri: route('api:contacts:show', $contact->uuid),
+    )->assertStatus(
        status: Http::OK
-   )->assertJson(fn(AssertableJson $json) =>
+   )->assertJson(
+       fn (AssertableJson $json) =>
     $json
         ->where(key: 'type', expected: 'contact')
         ->where(key: 'attributes.name.first', expected: $contact->first_name)
         ->where(key: 'attributes.name.last', expected: $contact->last_name)
         ->where(key: 'attributes.phone', expected: $contact->phone)
         ->etc(),
-    );
+   );
 });//5
 
 it('receives a 401 on show when not logged in', function () {
-
     $contact = Contact::factory()->create();
 
     getJson(
@@ -156,8 +158,8 @@ it('can update the contact record', function (string $string) {
                      'pronouns' => Pronouns::random(),
                      //'pronouns' => $string,
                  ]
-             )
-        )->assertStatus(
+        )
+    )->assertStatus(
             status: Http::ACCEPTED
         );
 
@@ -165,7 +167,6 @@ it('can update the contact record', function (string $string) {
         $contact->refresh()
     )->first_name->toEqual($string);*/
     expect(EloquentStoredEvent::query()->count())->toEqual(1);
-
 })->with('strings');//8
 it('returns a not found status code when trying to update a contact that doesnt exist', function (string $uuid) {
     auth()->login(User::factory()->create());
@@ -190,5 +191,4 @@ it('returns a not found status code when trying to update a contact that doesnt 
     )->assertStatus(
         status: Http::NOT_FOUND
     );
-
 })->with('uuids');//9
