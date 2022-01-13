@@ -17,8 +17,8 @@ services:
       - ./docker/nginx/ssl/:/etc/nginx/ssl
     working_dir: /var/www/vhost/
     ports:
-      -  '443:443'
-      -  '9008:9008'
+      -  '443:80'
+      -  '9008:9080'
     networks:
       - company-crm
     labels:
