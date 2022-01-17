@@ -1,9 +1,10 @@
 # Official Docker Image  for PHP
 # https://hub.docker.com/r/php/
 #FROM php:8.1.0RC6-fpm-alpine
+# Linux x64
 FROM php:8.0-fpm
 
-# Set Current Directory
+# Set Current WORKING Directory
 WORKDIR /var/www/vhost/
 
 #Install dependencies

@@ -1,4 +1,5 @@
 ## DOCKER OBJECTIVES
+ ## Labs https://labs.play-with-docker.com/
     - What are containers
     - What is Docker?
     - why do you need it ?
@@ -36,9 +37,9 @@
     - Testing
 
 ### DOCKER WORKS
-    "App Code",DockerFile =====> Docker Engine =====>BUILD  =====>Docker Image =====> RUN =====>Docker,Operating System
-   - Run multiple containers in one image
-   - Docker compose file
+    "App Code",DockerFile =====> Docker Engine =====>BUILD  =====>Docker Image =====> RUN =====>Docker,Operating Syste
+    - Run multiple containers in one image
+    - Docker compose file
    - 
 ### BENEFITS OF DOCKER COMPOSE
      - Reduces reliance on , and simplifies use of , DOCKER CLI
@@ -122,6 +123,11 @@
                 - # cat /etc/apt/
                 - # exit;
         - docker ps -a
+## RUN THE CONTAINER 
+    - docker container run -it --name test alpine sh
+    - #ls -l
+    - #ping google.com
+    - #ctrl + P + Q
 
 ## VIEW A LIST  CONTAINER
     - docker container ls
@@ -152,6 +158,9 @@
          -p 3000:80 
     - docker run -d -p 3000:3000  -p 8080:8080   nginx:latest
 
+### CONTAINERIZED APP
+    - An application that runs inside a container.
+
 ### MANAGING  CONTAINERS
     - docker ps --help
     - docker ps --a
@@ -159,10 +168,13 @@
 ## START A CONTAINER
     -Start the Container  
         - docker start <containerId>
+        - docker container start web
 ## STOP A CONTAINER
     - You can stop the ID or Actual Namme
     -Stop a Container
         - docker stop <containerId>
+        - docker container stop <containerId>
+        - docker container stop web
 
 ## REMOVE A CONTAINER
     -Removing Containers
@@ -225,6 +237,14 @@
         -docker run it ubuntu-npm npm -v
         --docker rm <containerId>
     -docker ps -a  
+
+## RUNNING A CONTAINER FROM AN  DOCKER HUB REGISTRY
+    - clone the project as source code
+    -Create an image from the source code
+    -Push the image to the docker hub registry
+    -Pull the image from the docker hub registry
+    -Run the container from registry
+    -docker container run -d --name web -p 8000:8000 company-crm-api
 
 ## DOCKER PS AND FORMATTING
     -docker ps
@@ -540,14 +560,14 @@
     -# cd ..
      #ls -al
 
-### HTTPS CERTIFICATE
-    -
+### docker image build ===> docker image push   ====> Registry
+    -docker container run
+    -docker container stop
+    -docker container push
 
 
 
-
-
-
+## CREATE VOLUMES
     - How to create volumes
         - $ docker-machine active   
         - $ docker images   
@@ -1828,19 +1848,36 @@ COPY ./docker/production/database/dump.sql \
 ## CREATE THE PRODUCTION CONFIGURATION
 
 ## DOCKER IMAGES
-- docker images  
+    -docker images  
 ## FILTER DOCKER IMAGES
--docker images --filter=reference='registry*/*/*:latest'     
--docker images --filter=reference=php:8.0.13-fpm-alpine3.14     
+    -docker images --filter=reference='registry*/*/*:latest'     
+    -docker images --filter=reference=php:8.0.13-fpm-alpine3.14     
 
 ## PUSH THE DOCKER IMAGES
-- docker login --username <username> --password <password> --email <email>
-- docker push webdevwithmatt/webserver-alpine:latest
-- docker push webdevwithmatt/php-runtime-alpine:latest
-- docker push webdevwithmatt/database-alpine:latest
+    -docker login --username <username> --password <password> --email <email>
+    -docker push webdevwithmatt/webserver-alpine:latest
+    -docker push webdevwithmatt/php-runtime-alpine:latest
+    -docker push webdevwithmatt/database-alpine:latest
 
 ## WHAT ABOUT A BUILD PIPELINE?
   - Github Actions
   - Travis CI
   - Circleci
   - Read https://dockeressentials.com/
+
+## CLOUD-NATIVE MICROSERVICES
+
+### DOCKER SWARM    
+    ## Secure Swarm Cluster
+        - Manager
+        - Worker
+        - docker swarm init --advertise-addr = 192.168.0.20
+
+
+#Microservices and Docker Services
+    - docker service create --name we -p 8080:8080  --replicas 2 webdevwithmatt/webserver-alpine:latest 
+    - docker service ls
+    - docker container ls
+    - docker service ps web
+    - docker service scale web=10
+        -https://labs.play-with-docker.com/
