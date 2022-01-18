@@ -1,4 +1,9 @@
 ## DOCKER OBJECTIVES
+## DOCKER TOOLS
+    - Docker Client
+    - Docker Compose
+    - Docker Machine
+    - Docker Kitematic
  ## Labs https://labs.play-with-docker.com/
     - What are containers
     - What is Docker?
@@ -19,6 +24,8 @@
     -Docker Image is Package Template Plan
 
 ## WHAT IS DOCKER
+    - Lightweight ,open, secure platform 
+    - Smplify building , shipping , running apps
     - Docker is a tools for running applications in an isolated environment
     - Docker is a containerization platform.
     - It enables to package ,(build) , your applications into images and run them as "containers"
@@ -27,6 +34,8 @@
     - App run in same environment 
     - Standard for software deployment
     - Docker is blue print for container
+    - Runs natively on Linux, Mac, Windows, and other platforms
+    - Relies on Image and container
     
 ## BENEFITS
     - Run  container in seconds instead of minutes   
@@ -1484,8 +1493,8 @@ Run -STDIN
  - docker run -i kodekloud/simmple-prompt-docker
    - docker run -it kodekloud/simmple-prompt-docker
 Run -port mapping
-   docker run kodekloud/webapp
-   - docker run -p 80:5000 kodekloud/simple-webapp
+  docker run kodekloud/webapp
+ docker run -p 80:5000 kodekloud/simple-webapp
    - docker run -p 8000:5000 kodekloud/simple-webapp
    - docker run -p 8001:5000 kodekloud/simple-webapp
    - docker run -p 3306:3306 mysql
@@ -1493,10 +1502,10 @@ Run -port mapping
    - docker run -p 8307:3306 mysql
 
 # RUN - Volume mapping
- - docker run mysql
-   - data are stored in /var/lib/mysql
-   - docker stop mysql
-   - docker rm mysql
+    docker run mysql
+    data are stored in /var/lib/mysql
+    docker stop mysql
+    docker rm mysql
      - create a directory
      - docker run -v /opt/datadir:/var/lib/mysql mysql
      - 
@@ -1732,70 +1741,50 @@ Run -port mapping
         -kubetcl scale --replicas=2000 my-webserver 
         -kubetcl rolling-update my-web-server --image=web-server:2
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ## What will you learn about Docker
-- How to deploy PHP Apps Using Docker Compose
-- Build a test a local development environment
-- Build a production environment from the development version
-- Build and tag self-contained Docker images
-- Push the Docker images to a Docker image registry
-- Test the production deployment
-- Deploy to production
+    -How to deploy PHP Apps Using Docker Compose
+    -Build a test a local development environment
+    -Build a production environment from the development version
+    -Build and tag self-contained Docker images
+    -Push the Docker images to a Docker image registry
+    -Test the production deployment
+    -Deploy to production
 
 ## The Docker Architecture
-- Docker uses a client -server architecture
-- The Docker client talks to the Docker deamon.
-- The Docker client and Docker deamon can run on the same machine or on different machines.
-- The Docker client and Docker deamon communicate using a REST API over UNIX sockets or a network interface.
-- The Docker client and Docker deamon communicate using a REST API over TCP/IP.
+    Docker uses a client -server architecture
+    The Docker client talks to the Docker deamon.
+    The Docker client and Docker deamon can run on the same machine or on different machines.
+    The Docker client and Docker deamon communicate using a REST API over UNIX sockets or a network interface.
+    The Docker client and Docker deamon communicate using a REST API over TCP/IP.
 
 ## Why Deploy PHP Apps Using Docker Compose
-- Can be a simpler way to deploy a PHP app
-- Use unified commands
-- Deploy to production like development
-- Easily share steps
-- integrate with other tools CI/CD
+    -Can be a simpler way to deploy a PHP app
+    -Use unified commands
+    -Deploy to production like development
+    -Easily share steps
+    -integrate with other tools CI/CD
 
 # What do you need?
-- A broad familiarity with the Docker client and Docker deamon
-- Docker Engine on Linux
-- Docker Desktop on Windows and MacOs
-- Docker Compose V2
-- A Docker image registry
-- A deployment server running Docker
+    -A broad familiarity with the Docker client and Docker deamon
+    -Docker Engine on Linux
+    -Docker Desktop on Windows and MacOs
+    -Docker Compose V2
+    -A Docker image registry
+    -A deployment server running Docker
 
 ## DEMO APPLICATION COMPOSITION
-- We will need three tools:
-  - PHP 8.0
-  - Web Server NGINX
-  - Database MySQL
-  - This composition follow "One process or service per container "
+    -We will need three tools:
+    -PHP 8.0
+    -Web Server NGINX
+    -Database MySQL
+     -This composition follow "One process or service per container "
 
 ## CREATE THE DEVELOPMENT CONFIGURATION
--docker
-    -development(directory)
-        ----nginx(services)
-                    ----default.conf
-                    ----Dockerfile
+    -docker
+        -development(directory)
+                ----nginx(services)
+                            ----default.conf
+                            ----Dockerfile
    
         -----php(services)
                 --DockerFile
@@ -1813,28 +1802,28 @@ Run -port mapping
         -----php(services)
              --DockerFile
 
--docker-compose.prod.yml
--docker-compose.dev.yml
+        -docker-compose.prod.yml
+        -docker-compose.dev.yml
 
 ## CREATE A DOCKERFILE NGINX FOR THE PHP APPLICATION
-FROM nginx:alpine    
-COPY ./docker/production/nginx/default.conf \
-        /etc/nginx/conf.d/default.conf
+    FROM nginx:alpine    
+    COPY ./docker/production/nginx/default.conf \
+            /etc/nginx/conf.d/default.conf
 
 ## CREATE A DOCKERFILE DATABASE FOR THE PHP APPLICATION
-FROM mariadb:latest
-COPY ./docker/production/database/dump.sql \
-        /docker-entrypoint-initdb.d/dump.sql 
+    FROM mariadb:latest
+    COPY ./docker/production/database/dump.sql \
+            /docker-entrypoint-initdb.d/dump.sql 
 
 ## Deploy the Application Locally
--docker compose \
-    -file docker-compose.dev.yml  up\
-    --build -d
+    -docker compose \
+        -file docker-compose.dev.yml  up\
+        --build -d
 
-## DOcker Pull
-- docker pull nginx:alpine
-- docker pull mariadb:latest
-- docker pull php:8.0.13-fpm-alpine3.14
+## Docker Pull
+    -docker pull nginx:alpine
+    -docker pull mariadb:latest
+    -docker pull php:8.0.13-fpm-alpine3.14
 
 ##Are the Containers working as Expected?
 # Docker Compose ps
