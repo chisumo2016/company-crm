@@ -54,6 +54,7 @@
                 -Create A MakeFile on the root of project
                     -Makefile file and list all command on it
                  https://api.company-crm.localhost
+
         H. Install packages
             - composer require juststeveking/http-status-codes
             - composer require juststeveking/http-status-codes
@@ -63,6 +64,7 @@
             - composer require pestphp/pest-plugin-laravel  --dev
             - php artisan  pest:install  say no
             - composer require nunomaduro/larastan --with-all-dependencies --dev
+
         I: Create a  phpstan.neon file on the root of project
         J: Create a src directory in root of our project
                 - create a folder Domains

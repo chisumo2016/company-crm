@@ -5,12 +5,12 @@ services:
   nginx:
     container_name: "${PROJECT_NAME}_nginx"
     build: ## Build the yml file
-      context: ./docker/nginx
-      dockerfile: Dockerfile
-    depends_on:
+      context: ./docker/nginx  # Dockerfile will be in the same folder as docker-compose.yml
+      dockerfile: Dockerfile  #Use dockerfile for image build
+    depends_on:  # This service depends on another service named "app" so start the other service first
       - app
-
     # Bridge network. all containers in the same network Local:container
+    # Host directory (./) : container directory (/var/www/vhost/company-crm:cached)
     volumes:
       - ./:/var/www/vhost/company-crm:cached
       - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
@@ -33,6 +33,14 @@ services:
       timeout: 3s
       retries: 3
 
+    #  Define deployment replicas and restart policy
+    deploy:
+      replicas: 2  # Define number of replicas to create for a service deployment
+      restart_policy:
+        condition: on-failure
+        delay: 5s    # Delay before restarting a container
+        max_attempts: 3
+        window: 120s
 #PHP SERVICE
   app:
     container_name: "${PROJECT_NAME}_php"
@@ -100,11 +108,11 @@ services:
       - '83:80' #'80:80'
       - '8080:8080' #Docker sends requests on port 8080 to Traefik on port 8080
     networks:
-      - company-crm
+      - company-crm   # Put service in "company-crm" bridge network
 
 # NETWORKS
 networks:
-  company-crm:
+  company-crm:   # define a bridge network
     driver: bridge
 
 # VOLUMES
