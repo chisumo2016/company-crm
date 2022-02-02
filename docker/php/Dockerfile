@@ -52,7 +52,7 @@ RUN docker-php-ext-install \
 
 # Install Composer from Official Docker Image \
 # https://hub.docker.com/r/composer/
-COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+COPY --from=composer:2.1.3 /usr/bin/composer /usr/bin/composer
 #RUN mkdir  -p /var/www/vhosts/survery-app/
 #RUN chmod  -R www-data:www-data /var/www/vhosts/survery-app/
 #RUN chmod 755 /var/www/vhosts/survery-app

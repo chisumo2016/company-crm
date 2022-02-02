@@ -1,6 +1,5 @@
 version: '3'
-services:
-##MICROSERVICES##
+services:   ##MICROSERVICES##
   #NGINX SERVICE
   nginx:
     container_name: "${PROJECT_NAME}_nginx"
@@ -9,18 +8,16 @@ services:
       dockerfile: Dockerfile  #Use dockerfile for image build
     depends_on:  # This service depends on another service named "app" so start the other service first
       - app
-    # Bridge network. all containers in the same network Local:container
-    # Host directory (./) : container directory (/var/www/vhost/company-crm:cached)
-    volumes:
-      - ./:/var/www/vhost/company-crm:cached
+    volumes: # Host directory (./) : container directory (/var/www/vhost/company-crm:cached)
+      - ./:/var/www/vhost/${PROJECT_NAME}:cached   #company-crm
       - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
-      - ./docker/nginx/ssl/:/etc/nginx/ssl
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d/  #d/
+      - ./docker/nginx/ssl:/etc/nginx/ssl  #ssl/
     working_dir: /var/www/vhost/
     ports:
-      -  '443:80'
-      -  '7000:80'
+      -  '443:443'
       -  '9008:9080'
+      -  '7000:80'
     networks:
       - company-crm
     labels:
@@ -34,13 +31,13 @@ services:
       retries: 3
 
     #  Define deployment replicas and restart policy
-    deploy:
-      replicas: 2  # Define number of replicas to create for a service deployment
-      restart_policy:
-        condition: on-failure
-        delay: 5s    # Delay before restarting a container
-        max_attempts: 3
-        window: 120s
+      #deploy:
+      #replicas: 2  # Define number of replicas to create for a service deployment
+        #restart_policy:
+        #condition: on-failure
+        #delay: 5s    # Delay before restarting a container
+        #max_attempts: 3
+      #window: 120s
 #PHP SERVICE
   app:
     container_name: "${PROJECT_NAME}_php"
@@ -52,8 +49,8 @@ services:
       COMPOSER_MEMORY_LIMIT: '-1'
     user: 501:501
     volumes:
-      - ./:/var/www/vhost/company-crm:cached
-    working_dir: /var/www/vhost/company-crm
+      - ./:/var/www/vhost/${PROJECT_NAME}:cached       #company-crm:cached
+    working_dir: /var/www/vhost/${PROJECT_NAME}        #company-crm
     ports:
       - '9003:9003'
     networks:
@@ -82,11 +79,30 @@ services:
       MYSQL_ROOT_HOST: '%'
       MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
       command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    restart: always
     volumes:
       - 'company-crm_mysql:/data'
-      #- '${FORWARD_DB_PORT:-4406}:3306'
     ports:
       - '4406:3306'
+      #- '${FORWARD_DB_PORT:-4406}:3306'
+    networks:
+      - company-crm
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    container_name: "${PROJECT_NAME}_phpmyadmin"
+    depends_on:
+      - mysql
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: '${APP_DOMAIN}'
+      PMA_PORT: '9003'
+      PMA_USER: '${DB_USERNAME}'
+      MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
+    volumes:
+      - 'company-crm_mysql:/data'
     networks:
       - company-crm
 
@@ -102,7 +118,7 @@ services:
       -   --api.insecure=true
       -   --log.level=debug
     volumes:
-      - '/var/run/docker.sock:/var/run/docker.sock:ro'
+      - '/var/run/docker.sock:/var/run/docker.sock'
       #-  - "/var/run/docker.sock:/var/run/docker.sock:ro"
     ports:
       - '83:80' #'80:80'
