@@ -17,6 +17,12 @@ migrate:
 fresh:
 	@docker exec  company-crm_php php artisan migrate:fresh
 
+key-generate:
+	@docker exec  company-crm_php php artisan key:generate
+
+key-generate:
+	@docker exec  company-crm_php php artisan config:cache
+
 coverage:
 	@docker exec company-crm_php .vendor/bin/pest --coverage
 

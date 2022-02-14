@@ -4,6 +4,7 @@
 # Linux x64
 FROM php:8.0-fpm
 
+
 # Set Current WORKING Directory
 WORKDIR /var/www/vhost/
 
@@ -30,6 +31,9 @@ RUN pecl install -o -f redis  \
 
 RUN docker-php-ext-configure intl
 
+#RUN apk add --update --no-cache postgresql-dev \
+   # && docker-php-ext-install  pdo pdo_pgsql
+
 
 # Clear Cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
@@ -53,6 +57,7 @@ RUN docker-php-ext-install \
 # Install Composer from Official Docker Image \
 # https://hub.docker.com/r/composer/
 COPY --from=composer:2.1.3 /usr/bin/composer /usr/bin/composer
+#RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
 #RUN mkdir  -p /var/www/vhosts/survery-app/
 #RUN chmod  -R www-data:www-data /var/www/vhosts/survery-app/
 #RUN chmod 755 /var/www/vhosts/survery-app
