@@ -20,7 +20,7 @@ fresh:
 key-generate:
 	@docker exec  company-crm_php php artisan key:generate
 
-key-generate:
+cache:
 	@docker exec  company-crm_php php artisan config:cache
 
 coverage:
@@ -32,7 +32,7 @@ seed:
 key:
 	@docker exec  company-crm_php php artisan key:generate
 
-cache:
+clear:
 	@docker exec  company-crm_php php artisan cache:clear
 
 config:

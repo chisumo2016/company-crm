@@ -31,8 +31,9 @@ RUN pecl install -o -f redis  \
 
 RUN docker-php-ext-configure intl
 
-#RUN apk add --update --no-cache postgresql-dev \
-   # && docker-php-ext-install  pdo pdo_pgsql
+#RUN set -ex \
+    	#&& apk --no-cache add postgresql-dev nodejs yarn npm\
+    	#&& docker-php-ext-install pdo pdo_pgsql
 
 
 # Clear Cache
@@ -45,6 +46,7 @@ RUN docker-php-ext-install \
     exif \
     gd \
     mbstring \
+    mysqli \
     opcache \
     pdo_mysql \
     pcntl \

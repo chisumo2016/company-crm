@@ -1,6 +1,9 @@
 ## Lecture 3 
     - Spinning with Docker 
     - docker-compose up -d
+ 
+#/usr/local/etc/php/8.1/  Docroot is: /usr/local/var/www
+
 ## TEST 
     -Featured Test Folder
 
@@ -287,3 +290,21 @@
     -Problem /Solution : Not login in to our test 
         -Run make test - OK
         -Run make analyse - OK
+
+## DOCKER VOLUME LOCATIONS\
+    - See where the docker volumes are located on our local machine
+         - Windows
+            C:\ProgrammData\docker\volumes
+
+         - Linux
+            /var/lib/docker/volumes
+
+         - Mac
+            /var/lib/docker/volumes
+
+        Docker for Mac - Creates a Linux Virtual Machine and stores all the Docker data here
+         $ screen ~/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux/tty
+        /# ls
+        /# ls /var/lib/docker
+        /# ls /var/lib/docker/volumes/
+        /# ls /var/lib/docker/****************

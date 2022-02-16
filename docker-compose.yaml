@@ -1,4 +1,6 @@
 version: '3'
+
+##MICROSERVICES##
 services:   ##MICROSERVICES##
   #NGINX SERVICE
   nginx:
@@ -10,8 +12,8 @@ services:   ##MICROSERVICES##
       - app
     volumes: # Host directory (./) : container directory (/var/www/vhost/company-crm:cached)
       - ./:/var/www/vhost/${PROJECT_NAME}:cached   #company-crm
-      #- ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ./docker/nginx/site.conf:/etc/nginx/config.d/default.conf:rw # server block
+      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
+      #- ./docker/nginx/site.conf:/etc/nginx/config.d/default.conf:rw # server block
       - ./docker/nginx/conf.d:/etc/nginx/conf.d/  #d/
       - ./docker/nginx/ssl:/etc/nginx/ssl  #ssl/
     working_dir: /var/www/vhost/  #Application file will be here
@@ -52,7 +54,7 @@ services:   ##MICROSERVICES##
       dockerfile: Dockerfile
     environment:
       PHP_MEMORY_LIMIT: '512M'
-      COMPOSER_MEMORY_LIMIT: '-1'
+      COMPOSER_MEMORY_LIMIT: '-1' #never die
     user: 501:501
     volumes:
       - ./:/var/www/vhost/${PROJECT_NAME}:cached       #company-crm:cached
@@ -63,14 +65,14 @@ services:   ##MICROSERVICES##
     networks:
       - company-crm
 
-  #REDIS SERVICE
+  #REDIS SERVICE CACHING
   redis:
     image: redis:latest
     container_name: "${PROJECT_NAME}_redis"
     ports:
       - '6379:6379'
     volumes:
-      - 'company-crm_redis_data:/data'  #'company-crm_redis:/data'
+      - 'company-crm_redis:/data'  #'company-crm_redis:/data'
     networks:
       - company-crm
 
@@ -89,7 +91,8 @@ services:   ##MICROSERVICES##
     restart: always
     tty: true
     volumes:
-      - 'company-crm_mysql:/data/db'
+      - './docker/mysql:/var/lib/mysql:rw'
+     # - 'company-crm_mysql:/data'
     ports:
       - '4406:3306'
       #- '${FORWARD_DB_PORT:-4406}:3306'
@@ -98,11 +101,11 @@ services:   ##MICROSERVICES##
 
   #Postgres SERVICE
   postgres:
-    image: postgres:latest #postgres:12.3-alpine
-    container_name: "${PROJECT_NAME}_postgres"
+    image: postgres:12.3-alpine #postgres:latest
+    container_name: ${APP_NAME}_postgres
     environment:
       POSTGRES_USER: ${DB_USERNAME}
-      POSTGRES_PASSWORD: %{DB_PASSWORD}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_DATABASE}
       POSTGRES_HOST_AUTH_METHOD: trust
     restart: always
@@ -158,9 +161,6 @@ networks:
 
 # VOLUMES
 volumes:
-  company-crm_redis_data:
-    driver: local
-
   company-crm_mysql:
     driver: local
 
@@ -169,6 +169,7 @@ volumes:
 
   company-crm_redis:
     driver: local
+
 
 
 
