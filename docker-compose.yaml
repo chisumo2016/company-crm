@@ -12,18 +12,18 @@ services:   ##MICROSERVICES##
       - app
     volumes: # Host directory (./) : container directory (/var/www/vhost/company-crm:cached)
       - ./:/var/www/vhost/${PROJECT_NAME}:cached   #company-crm
-      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
-      #- ./docker/nginx/site.conf:/etc/nginx/config.d/default.conf:rw # server block
+      - ./docker/nginx/conf.d/site.conf:/etc/nginx/nginx.conf
       - ./docker/nginx/conf.d:/etc/nginx/conf.d/  #d/
       - ./docker/nginx/ssl:/etc/nginx/ssl  #ssl/
+      #- ./docker/nginx/ngnix.conf:/etc/nginx/nginx.conf
+      #- ./docker/nginx/conf.d/site.conf:/etc/nginx/nginx.conf
+      #- ./docker/nginx/site.conf:/etc/nginx/config.d/default.conf:rw # server block
     working_dir: /var/www/vhost/  #Application file will be here
     restart: unless-stopped
     tty: true
     ports:
-      -  '443:443'
-      -  '8143:443'
+      -  '444:443'
       -  '9008:9008'
-
     networks:
       - company-crm
     labels:
@@ -58,6 +58,8 @@ services:   ##MICROSERVICES##
     user: 501:501
     volumes:
       - ./:/var/www/vhost/${PROJECT_NAME}:cached       #company-crm:cached
+      #- ./docker/src:/var/www/vhost/${PROJECT_NAME}:cached       #company-crm:cached
+      #- ./:/var/www/vhost/${PROJECT_NAME}:cached       #company-crm:cached
       #- ./docker-files/php/local.ini:/usr/local/etc/php/conf.d/local.ini  # example
     working_dir: /var/www/vhost/${PROJECT_NAME}        #company-crm
     ports:
@@ -87,6 +89,8 @@ services:   ##MICROSERVICES##
       MYSQL_PASSWORD: '${DB_PASSWORD}'
       MYSQL_ROOT_HOST: '%'
       MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
       command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     restart: always
     tty: true
@@ -102,7 +106,7 @@ services:   ##MICROSERVICES##
   #Postgres SERVICE
   postgres:
     image: postgres:12.3-alpine #postgres:latest
-    container_name: ${APP_NAME}_postgres
+    container_name: "${PROJECT_NAME}_postgres"
     environment:
       POSTGRES_USER: ${DB_USERNAME}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
@@ -110,7 +114,7 @@ services:   ##MICROSERVICES##
       POSTGRES_HOST_AUTH_METHOD: trust
     restart: always
     volumes:
-      - ./docker/postgress:/var/lib/postgresql/data
+      - ./docker/postgres:/var/lib/postgresql/data
     ports:
       - '5433:5432'
     networks:
@@ -130,7 +134,7 @@ services:   ##MICROSERVICES##
       PMA_USER: '${DB_USERNAME}'
       MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
     volumes:
-      - 'company-crm_phpmyadmin:/data'
+      - './docker/phpmyadmin:/data/db'
     networks:
       - company-crm
 
@@ -141,10 +145,11 @@ services:   ##MICROSERVICES##
     restart: always
     command:
       - --entrypoints.web.address=:80
-      -  --entrypoints.web-secure.address=:444
       -   --providers.docker=true
       -   --api.insecure=true
       -   --log.level=debug
+      #-  --entrypoints.web-secure.address=:444
+      #-  --entrypoints.web-secure.tls=true
     volumes:
       - '/var/run/docker.sock:/var/run/docker.sock'
       #-  - "/var/run/docker.sock:/var/run/docker.sock:ro"
